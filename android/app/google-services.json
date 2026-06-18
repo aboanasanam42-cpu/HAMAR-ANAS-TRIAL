@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "740116972108",
+    "project_id": "project-d3ce2f7d-5511-45f4-a11",
+    "storage_bucket": "project-d3ce2f7d-5511-45f4-a11.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740116972108:android:8028713fc825748fbf6ae9",
+        "android_client_info": {
+          "package_name": "AlwalyMEXCBot.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqoEhywnftHuiLl2vFP6DuvVaqLbiqaDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

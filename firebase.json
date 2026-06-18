@@ -1,0 +1,36 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "mexc-alwaly-bot-42320068",
+          "appId": "1:758751119890:android:c0a1b2c3d4e5f6a7b8c9d0",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "mexc-alwaly-bot-42320068",
+          "configurations": {
+            "android": "1:758751119890:android:c0a1b2c3d4e5f6a7b8c9d0",
+            "web": "1:758751119890:web:860cf7e8261cf53ce1e6cb"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
