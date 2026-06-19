@@ -95,6 +95,49 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _forgotPassword() async {
+    final email = _emailController.text.trim().isNotEmpty
+        ? _emailController.text.trim()
+        : 'aboanasanam42@gmail.com';
+
+    if (!email.contains('@')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Please enter a valid email to reset password.'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+    final authService = Provider.of<AuthService>(context, listen: false);
+    try {
+      await authService.sendPasswordReset(email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Password reset email sent to $email.'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+        ),
+      );
+    } on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send reset email: ${e.toString()}'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -197,9 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16),
                 if (!_isLoading)
                   TextButton(
-                    onPressed: () {
-                      // TODO: Implement Forgot Password
-                    },
+                    onPressed: _forgotPassword,
                     child: Text(
                       'Forgot Password?',
                       style: TextStyle(color: Theme.of(context).primaryColor),
