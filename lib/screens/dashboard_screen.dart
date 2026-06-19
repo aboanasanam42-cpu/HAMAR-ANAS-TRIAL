@@ -16,14 +16,6 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () => context.go('/settings'),
             tooltip: 'Settings',
           ),
-          IconButton(
-            icon: const Icon(Icons.logout_outlined),
-            onPressed: () {
-              // TODO: Implement Logout
-              context.go('/');
-            },
-            tooltip: 'Logout',
-          )
         ],
       ),
       body: ListView(

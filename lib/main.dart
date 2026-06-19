@@ -44,11 +44,11 @@ class MyApp extends StatelessWidget {
 
     final router = GoRouter(
       refreshListenable: authService,
-      initialLocation: '/',
+      initialLocation: '/dashboard',
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const LoginScreen(),
+          builder: (context, state) => const DashboardScreen(),
         ),
         GoRoute(
           path: '/dashboard',
@@ -59,23 +59,6 @@ class MyApp extends StatelessWidget {
           builder: (context, state) => const SettingsScreen(),
         ),
       ],
-      redirect: (BuildContext context, GoRouterState state) {
-        final isAuthenticated = authService.isAuthenticated;
-        final isLoggingIn = state.matchedLocation == '/';
-
-        // If not authenticated and not on the login screen, redirect to login
-        if (!isAuthenticated && !isLoggingIn) {
-          return '/';
-        }
-
-        // If authenticated and on the login screen, redirect to the dashboard
-        if (isAuthenticated && isLoggingIn) {
-          return '/dashboard';
-        }
-
-        // No redirect needed
-        return null;
-      },
     );
 
     return MaterialApp.router(
