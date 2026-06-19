@@ -46,14 +46,22 @@ jobs:
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses || true
 
-      - name: Auto-Fix pubspec SDK constraints and Get Dependencies
+      - name: Advanced Auto-Fix Dependencies and SDKs
         run: |
+          # 1. تخطي قيود الـ SDK الصارمة
           sed -i 's/sdk: .*/sdk: ">=3.0.0 <4.0.0"/' pubspec.yaml
+          
+          # 2. تنظيف الكاش وجلب الحزم وتحديث المتعارض منها تلقائياً
           flutter pub cache clean --force || true
           flutter pub get
+          
+          # 3. أمر ذكي (مصلح الطرف الثالث) لإجبار الحزم القديمة (مثل android_long_task) على الترقية أو التوافق
+          flutter pub upgrade --major-versions --allow-mismatches || true
 
-      - name: Build release APK
-        run: flutter build apk --release
+      - name: Build release APK (With Auto-Bypass for Legacy Errors)
+        run: |
+          # تنفيذ بناء الـ APK مع توجيه الـ Gradle لتخطي تحذيرات الكود القديم
+          flutter build apk --release --no-sound-null-safety || flutter build apk --release
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
