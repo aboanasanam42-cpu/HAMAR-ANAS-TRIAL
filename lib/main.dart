@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp.router(
-      title: 'MEXC Trading Bot',
+      title: 'MALEK MEXC',
       theme: AppTheme.darkTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: Provider.of<ThemeProvider>(context).themeMode,

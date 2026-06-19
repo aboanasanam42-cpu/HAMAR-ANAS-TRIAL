@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'MEXC Trading Bot',
+                  'MALEK MEXC',
                   textAlign: TextAlign.center,
                   style: textTheme.displayLarge?.copyWith(
                     color: Theme.of(context).primaryColor,
