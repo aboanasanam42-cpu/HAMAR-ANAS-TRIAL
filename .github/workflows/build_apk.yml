@@ -2,65 +2,65 @@ name: Build Flutter APK
 
 on:
   push:
-      branches:
-            - main
-              workflow_dispatch:
+    branches:
+      - main
+  workflow_dispatch:
 
-              jobs:
-                build:
-                    runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-                        steps:
-                              - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-                                    - name: Set up Java
-                                            uses: actions/setup-java@v4
-                                                    with:
-                                                              distribution: 'zulu'
-                                                                        java-version: '11'
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '11'
 
-                                                                              - name: Cache Gradle
-                                                                                      uses: actions/cache@v4
-                                                                                              with:
-                                                                                                        path: |
-                                                                                                                    ~/.gradle/caches
-                                                                                                                                ~/.gradle/wrapper
-                                                                                                                                          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-                                                                                                                                                    restore-keys: |
-                                                                                                                                                                gradle-${{ runner.os }}-
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
 
-                                                                                                                                                                      - name: Cache Flutter Pub
-                                                                                                                                                                              uses: actions/cache@v4
-                                                                                                                                                                                      with:
-                                                                                                                                                                                                path: ~/.pub-cache
-                                                                                                                                                                                                          key: flutter-pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
-                                                                                                                                                                                                                    restore-keys: |
-                                                                                                                                                                                                                                flutter-pub-${{ runner.os }}-
+      - name: Cache Flutter Pub
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: flutter-pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            flutter-pub-${{ runner.os }}-
 
-                                                                                                                                                                                                                                      - name: Install Flutter
-                                                                                                                                                                                                                                              uses: subosito/flutter-action@v2
-                                                                                                                                                                                                                                                      with:
-                                                                                                                                                                                                                                                                flutter-version: '3.10.0'
-                                                                                                                                                                                                                                                                          channel: stable
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.10.0'
+          channel: stable
 
-                                                                                                                                                                                                                                                                                - name: Accept Android licenses
-                                                                                                                                                                                                                                                                                        run: yes | flutter doctor --android-licenses || true
+      - name: Accept Android licenses
+        run: yes | flutter doctor --android-licenses || true
 
-                                                                                                                                                                                                                                                                                              - name: Get Flutter dependencies
-                                                                                                                                                                                                                                                                                                      run: flutter pub get
+      - name: Get Flutter dependencies
+        run: flutter pub get
 
-                                                                                                                                                                                                                                                                                                            - name: Build release APK
-                                                                                                                                                                                                                                                                                                                    run: flutter build apk --release
+      - name: Build release APK
+        run: flutter build apk --release
 
-                                                                                                                                                                                                                                                                                                                          - name: Upload APK artifact
-                                                                                                                                                                                                                                                                                                                                  uses: actions/upload-artifact@v4
-                                                                                                                                                                                                                                                                                                                                          with:
-                                                                                                                                                                                                                                                                                                                                                    name: release-apk
-                                                                                                                                                                                                                                                                                                                                                              path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
-                                                                                                                                                                                                                                                                                                                                                                    - name: Create Release and upload APK
-                                                                                                                                                                                                                                                                                                                                                                            uses: ncipollo/release-action@v1
-                                                                                                                                                                                                                                                                                                                                                                                    with:
-                                                                                                                                                                                                                                                                                                                                                                                              tag: 'apk-release-${{ github.run_number }}'
-                                                                                                                                                                                                                                                                                                                                                                                                        files: build/app/outputs/flutter-apk/app-release.apk
-                                                                                                                                                                                                                                                                                                                                                                                                                  token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release and upload APK
+        uses: ncipollo/release-action@v1
+        with:
+          tag: 'apk-release-${{ github.run_number }}'
+          files: build/app/outputs/flutter-apk/app-release.apk
+          token: ${{ secrets.GITHUB_TOKEN }}
