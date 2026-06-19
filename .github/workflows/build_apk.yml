@@ -54,21 +54,27 @@ jobs:
 
       - name: Ultimate Bypass and Build ARM64 APK
         run: |
-          # 1. توحيد إصدار الكوتلن ليتوافق مع أحدث إضافات Firebase في مشروعك
+          # 1. توحيد إصدار الكوتلن ليتوافق مع الحزم
           export GRADLE_OPTS="-Dorg.gradle.project.kotlinVersion=1.9.20"
           
-          # 2. حقن أمر السوبر (Manifest Merger Flag) لإجبار Gradle على دمج الـ Manifest وتخطي التعارضات تلقائياً
-          mkdir -p android/app/src/main
-          
-          # 3. سكربت ذكي لحقن الـ namespace للمكتبات القديمة مباشرة في الـ pub-cache لتفادي خطأ السجلات السابقة
+          # 2. سكربت ذكي لحقن الـ namespace للمكتبات القديمة في الـ pub-cache لتفادي خطأ التسمية
           find ~/.pub-cache/hosted/pub.dev/ -name "build.gradle" -exec sh -c '
             if ! grep -q "namespace" "$1"; then
               sed -i "/android {/a \    namespace \"com.example.fallbacknamespace\"" "$1"
             fi
           ' _ {} \;
 
-          # 4. أمر بناء التطبيق الفعلي (تمت إضافته ليقوم بالبناء)
-          flutter build apk --target-platform android-arm64 --release
+          # 3. حل مشكلة إصدارات Firebase الناقصة (مثل خطأ firebase-auth-ktx) عبر إجبار مشروع أندرويد على دمج الـ Firebase BOM تلقائياً
+          if [ -f android/app/build.gradle ]; then
+            sed -i '/dependencies {/a \    implementation platform("com.google.firebase:firebase-bom:33.1.1")' android/app/build.gradle
+          fi
+
+          # 4. بناء نسخة الـ APK النهائية المستقرة والمخصصة لمعمارية هاتفك
+          flutter build apk --release --target-platform android-arm64 --no-tree-shake-icons
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
