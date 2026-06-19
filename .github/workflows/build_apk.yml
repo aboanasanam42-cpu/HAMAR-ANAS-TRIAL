@@ -67,12 +67,8 @@ jobs:
             fi
           ' _ {} \;
 
-          # 4. بناء الـ APK مخصصاً بالكامل لنظام معمارية هاتفك (ARM64) بأقصى سرعة وثبات
-          flutter build apk --release --target-platform android-arm64 --no-tree-shake-icons
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
+          # 4. أمر بناء التطبيق الفعلي (تمت إضافته ليقوم بالبناء)
+          flutter build apk --target-platform android-arm64 --release
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
