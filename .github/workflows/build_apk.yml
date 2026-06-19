@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -37,17 +38,18 @@ jobs:
           restore-keys: |
             flutter-pub-${{ runner.os }}-
 
-      - name: Install Flutter
+      - name: Install Flutter (Targeting Android 15 & Dart 3.9+)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
           channel: stable
 
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses || true
 
-      - name: Get Flutter dependencies
-        run: flutter pub get
+      - name: Auto-Fix and Get Flutter dependencies
+        run: |
+          flutter pub pub cache clean --force || true
+          flutter pub get || (echo "Attempting auto-fix for dependency conflict..." && flutter pub upgrade --major-versions --allow-mismatches && flutter pub get)
 
       - name: Build release APK
         run: flutter build apk --release
