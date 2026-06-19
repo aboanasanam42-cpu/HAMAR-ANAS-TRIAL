@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.pub-cache
-          key: flutter-pub-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          key: flutter-pub-${{ runner.os }}-${{ hashFiles('**/pubspec.yaml') }}
           restore-keys: |
             flutter-pub-${{ runner.os }}-
 
@@ -42,26 +42,19 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
 
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses || true
 
-      - name: Advanced Auto-Fix Dependencies and SDKs
+      - name: Install Dependencies Safely
         run: |
-          # 1. تخطي قيود الـ SDK الصارمة
-          sed -i 's/sdk: .*/sdk: ">=3.0.0 <4.0.0"/' pubspec.yaml
-          
-          # 2. تنظيف الكاش وجلب الحزم وتحديث المتعارض منها تلقائياً
-          flutter pub cache clean --force || true
           flutter pub get
-          
-          # 3. أمر ذكي (مصلح الطرف الثالث) لإجبار الحزم القديمة (مثل android_long_task) على الترقية أو التوافق
-          flutter pub upgrade --major-versions --allow-mismatches || true
+          flutter pub upgrade --major-versions
 
-      - name: Build release APK (With Auto-Bypass for Legacy Errors)
+      - name: Build release APK
         run: |
-          # تنفيذ بناء الـ APK مع توجيه الـ Gradle لتخطي تحذيرات الكود القديم
-          flutter build apk --release --no-sound-null-safety || flutter build apk --release
+          flutter build apk --release
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
