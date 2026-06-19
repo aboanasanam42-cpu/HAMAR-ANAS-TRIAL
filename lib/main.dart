@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:myapp/services/auth_service.dart';
 import 'package:myapp/screens/dashboard_screen.dart';
-import 'package:myapp/screens/login_screen.dart';
 import 'package:myapp/screens/settings_screen.dart';
 import 'package:myapp/theme/app_theme.dart';
 import 'firebase_options.dart';
