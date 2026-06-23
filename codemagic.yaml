@@ -8,6 +8,7 @@ workflows:
     triggering:
       events:
         - push
+      # تم تصحيح المحاذاة هنا لتكون الفروع تابعة لقسم triggering بشكل صحيح وفقاً لـ Codemagic
       branches:
         - main
     scripts:
