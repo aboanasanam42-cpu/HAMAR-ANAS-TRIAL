@@ -8,7 +8,7 @@ workflows:
     triggering:
       events:
         - push
-      # تم تصحيح البنية البرمجية هنا لتتوافق مع معايير المنصة
+        # تم تصحيح البنية البرمجية هنا لتتوافق مع معايير المنصة
       when:
         branch: main
     scripts:
