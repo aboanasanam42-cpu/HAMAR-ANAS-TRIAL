@@ -75,11 +75,14 @@ jobs:
           # 4. بناء نسخة الـ APK النهائية المستقرة والمخصصة لمعمارية هاتفك
           flutter build apk --release --target-platform android-arm64 --no-tree-shake-icons
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Create Release and upload APK
+        uses: ncipollo/release-action@v1
+       with:
+        artifacts: "path/to/your/app-release-33.apk" # تم تغيير files إلى artifacts
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: "apk-release-33"
+        # أي إعدادات أخرى تحتاجها...
+
 
       - name: Create Release and upload APK
         uses: ncipollo/release-action@v1
