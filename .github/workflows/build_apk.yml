@@ -9,6 +9,8 @@ on:
 jobs:
   build: # أو اسم الـ job لديك
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     permissions:
       contents: write
