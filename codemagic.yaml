@@ -8,9 +8,9 @@ workflows:
     triggering:
       events:
         - push
-      # تم تصحيح المحاذاة هنا لتكون الفروع تابعة لقسم triggering بشكل صحيح وفقاً لـ Codemagic
-      branches:
-        - main
+      # تم تصحيح البنية البرمجية هنا لتتوافق مع معايير المنصة
+      when:
+        branch: main
     scripts:
       - name: Set up local.properties
         script: |
