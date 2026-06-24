@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:myapp/services/auth_service.dart';
 import 'package:myapp/screens/dashboard_screen.dart';
@@ -11,9 +9,8 @@ import 'package:myapp/screens/settings_screen.dart';
 import 'package:myapp/theme/app_theme.dart';
 import 'firebase_options.dart';
 
-// A placeholder for a future theme provider if we need dark/light mode toggle
 class ThemeProvider with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.dark;
+  final ThemeMode _themeMode = ThemeMode.dark;
   ThemeMode get themeMode => _themeMode;
 }
 
@@ -39,10 +36,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context);
-
+    // تم إلغاء ربط الحماية لفتح الشاشة مباشرة بدون شروط تسجيل الدخول
     final router = GoRouter(
-      refreshListenable: authService,
       initialLocation: '/dashboard',
       routes: [
         GoRoute(
