@@ -8,7 +8,6 @@ workflows:
     triggering:
       events:
         - push
-        # تم تصحيح البنية البرمجية هنا لتتوافق مع معايير المنصة
       when:
         branch: main
     scripts:
@@ -18,8 +17,11 @@ workflows:
       - name: Get dependencies
         script: |
           flutter pub get
-      - name: Build Android APK Release
+      - name: Clean project cache
         script: |
-          flutter build apk --release
+          flutter clean
+      - name: Build Android APK Debug
+        script: |
+          flutter build apk --debug
     artifacts:
-      - build/app/outputs/flutter-apk/*-release.apk
+      - build/app/outputs/flutter-apk/*.apk
