@@ -1,34 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-import 'package:myapp/services/auth_service.dart';
-import 'package:myapp/screens/dashboard_screen.dart';
-import 'package:myapp/screens/settings_screen.dart';
-import 'package:myapp/theme/app_theme.dart';
-import 'firebase_options.dart';
-
-class ThemeProvider with ChangeNotifier {
-  final ThemeMode _themeMode = ThemeMode.dark;
-  ThemeMode get themeMode => _themeMode;
-}
-
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ThemeProvider()),
-        ChangeNotifierProvider(create: (context) => AuthService()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -36,33 +10,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // إعداد التوجيه ليفتح مباشرة على لوحة التحكم كموقع رئيسي للتطبيق
-    final GoRouter router = GoRouter(
-      initialLocation: '/',
-      routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const DashboardScreen(),
+    return const MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Text(
+            'MALEK MEXC - TEST CLEAN',
+            style: TextStyle(color: Colors.green, fontSize: 24, fontWeight: FontWeight.bold),
+          ),
         ),
-        GoRoute(
-          path: '/settings',
-          builder: (context, state) => const SettingsScreen(),
-        ),
-      ],
-    );
-
-    // استخدام Consumer هنا لضمان استقرار قراءة الـ ThemeMode وتفادي مشاكل الـ BuildContext
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        return MaterialApp.router(
-          title: 'MALEK MEXC',
-          theme: AppTheme.darkTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: themeProvider.themeMode,
-          routerConfig: router,
-          debugShowCheckedModeBanner: false,
-        );
-      },
+      ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
