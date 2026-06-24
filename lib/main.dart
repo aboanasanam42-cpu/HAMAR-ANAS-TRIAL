@@ -36,16 +36,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // تم إلغاء ربط الحماية لفتح الشاشة مباشرة بدون شروط تسجيل الدخول
-    final router = GoRouter(
-      initialLocation: '/dashboard',
+    // إعداد التوجيه ليفتح مباشرة على لوحة التحكم كموقع رئيسي للتطبيق
+    final GoRouter router = GoRouter(
+      initialLocation: '/',
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const DashboardScreen(),
-        ),
-        GoRoute(
-          path: '/dashboard',
           builder: (context, state) => const DashboardScreen(),
         ),
         GoRoute(
@@ -55,13 +51,18 @@ class MyApp extends StatelessWidget {
       ],
     );
 
-    return MaterialApp.router(
-      title: 'MALEK MEXC',
-      theme: AppTheme.darkTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: Provider.of<ThemeProvider>(context).themeMode,
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
+    // استخدام Consumer هنا لضمان استقرار قراءة الـ ThemeMode وتفادي مشاكل الـ BuildContext
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp.router(
+          title: 'MALEK MEXC',
+          theme: AppTheme.darkTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeProvider.themeMode,
+          routerConfig: router,
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }
