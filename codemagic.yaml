@@ -4,12 +4,14 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
+      groups:
+        - keystore_credentials
       flutter: stable
     triggering:
       events:
         - push
-      branch_patterns:
-        - pattern: 'main'
+      when:
+        branch: main
     scripts:
       - name: Set up local.properties
         script: |
@@ -17,3 +19,13 @@ workflows:
       - name: Get dependencies
         script: |
           flutter pub get
+      - name: Clean project cache
+        script: |
+          flutter clean
+      - name: Build Android APK Release
+        script: |
+          flutter build apk --release \
+            --build-name=1.0.0 \
+            --build-number=1
+    artifacts:
+      - build/app/outputs/flutter-apk/*-release.apk
