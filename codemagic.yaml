@@ -24,8 +24,6 @@ workflows:
           flutter clean
       - name: Build Android APK Release
         script: |
-          flutter build apk --release \
-            --build-name=1.0.0 \
-            --build-number=1
+          flutter build apk --release --build-name=1.0.0 --build-number=1
     artifacts:
-      - build/app/outputs/flutter-apk/*-release.apk
+      - build/app/outputs/flutter-apk/app-release.apk
