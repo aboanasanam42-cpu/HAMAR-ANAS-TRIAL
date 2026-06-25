@@ -8,8 +8,8 @@ workflows:
     triggering:
       events:
         - push
-      when:
-        branch: main
+      branch_patterns:
+        - pattern: 'main'
     scripts:
       - name: Set up local.properties
         script: |
@@ -17,11 +17,3 @@ workflows:
       - name: Get dependencies
         script: |
           flutter pub get
-      - name: Clean project cache
-        script: |
-          flutter clean
-      - name: Build Android APK Debug
-        script: |
-          flutter build apk --debug
-    artifacts:
-      - build/app/outputs/flutter-apk/*.apk
